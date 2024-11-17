@@ -14,7 +14,7 @@ from square_administration.configuration import (
     config_str_ssl_key_file_path,
     config_str_ssl_crt_file_path,
 )
-from square_administration.routes import core
+from square_administration.routes import core, authentication
 
 app = FastAPI()
 
@@ -26,6 +26,7 @@ app.add_middleware(
 )
 
 app.include_router(core.router)
+app.include_router(authentication.router)
 
 
 @app.get("/")
