@@ -2,6 +2,11 @@ import os
 import sys
 
 from square_commons import ConfigReader
+from square_database_helper import SquareDatabaseHelper, FiltersV0
+from square_database_helper.pydantic_models import FilterConditionsV0
+from square_database_structure.square import global_string_database_name
+from square_database_structure.square.public import global_string_schema_name
+from square_database_structure.square.public.tables import App
 from square_logger.main import SquareLogger
 
 try:
@@ -18,6 +23,7 @@ try:
     # ===========================================
     # general
     config_str_module_name = ldict_configuration["GENERAL"]["MODULE_NAME"]
+    config_str_app_name = ldict_configuration["GENERAL"]["APP_NAME"]
     # ===========================================
 
     # ===========================================
@@ -63,6 +69,23 @@ try:
         pstr_log_path=config_str_log_path,
         pint_log_backup_count=config_int_log_backup_count,
     )
+    # get app id
+    global_object_square_database_helper = SquareDatabaseHelper(
+        param_str_square_database_ip=config_str_square_database_ip,
+        param_int_square_database_port=config_int_square_database_port,
+        param_str_square_database_protocol=config_str_square_database_protocol,
+    )
+    global_int_app_id = global_object_square_database_helper.get_rows_v0(
+        database_name=global_string_database_name,
+        schema_name=global_string_schema_name,
+        table_name=App.__tablename__,
+        filters=FiltersV0(
+            root={
+                App.app_name.name: FilterConditionsV0(eq=config_str_app_name),
+            }
+        ),
+        columns=[App.app_id.name],
+    )["data"]["main"][0][App.app_id.name]
 except Exception as e:
     print(
         "\033[91mMissing or incorrect config.ini file.\n"
