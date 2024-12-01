@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v1.1.0
+
+- add core -> get_all_greetings_v0.
+
 ### v1.0.0
 
 - initial implementation.
