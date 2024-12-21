@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v1.2.0
+
+- set allow_credentials=True.
+
 ### v1.1.0
 
 - add core -> get_all_greetings_v0.
