@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v1.2.1
+
+- fix bug in core -> get_all_greetings_v0, now sending full response instead of only main.
+
 ### v1.2.0
 
 - set allow_credentials=True.

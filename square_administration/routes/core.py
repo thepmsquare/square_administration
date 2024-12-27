@@ -99,7 +99,8 @@ async def get_all_greetings_v0(
             ]
             for x in user_credentials_response
         }
-        main = [
+        response_clone = response
+        response_clone["data"]["main"] = [
             {
                 **greeting,
                 UserCredential.user_credential_username.name: user_credentials_map.get(
@@ -114,7 +115,7 @@ async def get_all_greetings_v0(
         """
         output_content = get_api_output_in_standard_format(
             message=messages["GENERIC_READ_SUCCESSFUL"],
-            data={"main": main},
+            data=response_clone["data"],
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
