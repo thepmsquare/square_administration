@@ -6,6 +6,7 @@ from fastapi import APIRouter, status, HTTPException, Header
 from fastapi.responses import JSONResponse
 from requests import HTTPError
 from square_commons import get_api_output_in_standard_format
+from square_commons.api_utils import create_cookie
 
 from square_administration.configuration import (
     global_object_square_logger,
@@ -66,14 +67,23 @@ async def register_username_v0(
         """
         return value
         """
+        refresh_token = response["data"]["main"]["refresh_token"]
+        del response["data"]["main"]["refresh_token"]
         output_content = get_api_output_in_standard_format(
             message=messages["REGISTRATION_SUCCESSFUL"],
             data={"main": response["data"]["main"]},
         )
-        return JSONResponse(
+        json_response = JSONResponse(
             status_code=status.HTTP_201_CREATED,
             content=output_content,
         )
+        json_response.set_cookie(
+            **create_cookie(
+                key="refresh_token|" + str(global_int_app_id),
+                value=refresh_token,
+            )
+        )
+        return json_response
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
         """
@@ -133,14 +143,23 @@ async def login_username_v0(
         """
         return value
         """
+        refresh_token = response["data"]["main"]["refresh_token"]
+        del response["data"]["main"]["refresh_token"]
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
             data={"main": response["data"]["main"]},
         )
-        return JSONResponse(
+        json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
             content=output_content,
         )
+        json_response.set_cookie(
+            **create_cookie(
+                key="refresh_token|" + str(global_int_app_id),
+                value=refresh_token,
+            )
+        )
+        return json_response
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
         """

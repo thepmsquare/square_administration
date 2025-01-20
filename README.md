@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v2.0.0
+
+- remove refresh token from response body and send in cookies.
+
 ### v1.2.1
 
 - fix bug in core -> get_all_greetings_v0, now sending full response instead of only main.
