@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v2.2.0
+
+- authentication
+    - logout_v0, generate_access_token_v0 remove refresh token from request header and accept in cookie.
+
 ### v2.1.0
 
 - add authentication -> logout_v0, generate_access_token_v0.

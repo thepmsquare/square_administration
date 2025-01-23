@@ -12,4 +12,5 @@ messages = {
     "GENERIC_500": "an internal server error occurred. please try again later.",
     "INCORRECT_ACCESS_TOKEN": "the access token provided is invalid or expired.",
     "INCORRECT_REFRESH_TOKEN": "the refresh token provided is invalid or expired.",
+    "REFRESH_TOKEN_NOT_FOUND": "refresh token not found. please login again.",
 }

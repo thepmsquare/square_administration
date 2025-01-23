@@ -2,7 +2,7 @@ import json
 from typing import Annotated
 
 import bcrypt
-from fastapi import APIRouter, status, HTTPException, Header
+from fastapi import APIRouter, status, HTTPException, Header, Request
 from fastapi.responses import JSONResponse
 from requests import HTTPError
 from square_commons import get_api_output_in_standard_format
@@ -260,15 +260,23 @@ async def remove_app_for_self_v0(
 
 @router.delete("/logout/v0")
 @global_object_square_logger.async_auto_logger
-async def logout_v0(
-    refresh_token: Annotated[str, Header()],
-):
+async def logout_v0(request: Request):
 
     try:
         """
         validation
         """
-        # pass
+
+        refresh_token = request.cookies.get("refresh_token|" + str(global_int_app_id))
+        if refresh_token is None:
+            output_content = get_api_output_in_standard_format(
+                message=messages["REFRESH_TOKEN_NOT_FOUND"],
+                log=f"refresh token not found.",
+            )
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=output_content,
+            )
         """
         main process
         """
@@ -320,14 +328,23 @@ async def logout_v0(
 @router.get("/generate_access_token/v0")
 @global_object_square_logger.async_auto_logger
 async def generate_access_token_v0(
-    refresh_token: Annotated[str, Header()],
+    request: Request,
 ):
 
     try:
         """
         validation
         """
-        # pass
+        refresh_token = request.cookies.get("refresh_token|" + str(global_int_app_id))
+        if refresh_token is None:
+            output_content = get_api_output_in_standard_format(
+                message=messages["REFRESH_TOKEN_NOT_FOUND"],
+                log=f"refresh token not found.",
+            )
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=output_content,
+            )
         """
         main process
         """
