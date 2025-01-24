@@ -5,6 +5,7 @@ import bcrypt
 from fastapi import APIRouter, status, HTTPException, Header, Request
 from fastapi.responses import JSONResponse
 from requests import HTTPError
+from square_authentication_helper import TokenType
 from square_commons import get_api_output_in_standard_format
 from square_commons.api_utils import create_cookie
 
@@ -277,6 +278,22 @@ async def logout_v0(request: Request):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content=output_content,
             )
+        refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
+            refresh_token, TokenType.refresh_token
+        )[
+            "data"
+        ][
+            "main"
+        ]
+        if refresh_token_payload["app_id"] != global_int_app_id:
+            output_content = get_api_output_in_standard_format(
+                message=messages["INCORRECT_REFRESH_TOKEN"],
+                log=f"refresh token is for different app id. intended app id: {global_int_app_id}, actual app id: {refresh_token_payload['app_id']}.",
+            )
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=output_content,
+            )
         """
         main process
         """
@@ -340,6 +357,22 @@ async def generate_access_token_v0(
             output_content = get_api_output_in_standard_format(
                 message=messages["REFRESH_TOKEN_NOT_FOUND"],
                 log=f"refresh token not found.",
+            )
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=output_content,
+            )
+        refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
+            refresh_token, TokenType.refresh_token
+        )[
+            "data"
+        ][
+            "main"
+        ]
+        if refresh_token_payload["app_id"] != global_int_app_id:
+            output_content = get_api_output_in_standard_format(
+                message=messages["INCORRECT_REFRESH_TOKEN"],
+                log=f"refresh token is for different app id. intended app id: {global_int_app_id}, actual app id: {refresh_token_payload['app_id']}.",
             )
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
