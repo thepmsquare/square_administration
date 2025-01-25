@@ -1,5 +1,3 @@
-import os.path
-
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -15,6 +13,7 @@ from square_administration.configuration import (
     config_str_ssl_crt_file_path,
 )
 from square_administration.routes import core, authentication
+from square_administration.utils.common import is_https
 
 app = FastAPI()
 
@@ -39,9 +38,7 @@ async def root():
 
 if __name__ == "__main__":
     try:
-        if os.path.exists(config_str_ssl_key_file_path) and os.path.exists(
-            config_str_ssl_crt_file_path
-        ):
+        if is_https():
             run(
                 app,
                 host=config_str_host_ip,
