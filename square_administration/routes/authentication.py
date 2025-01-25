@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from typing import Annotated
 
 import bcrypt
@@ -14,12 +15,14 @@ from square_administration.configuration import (
     config_str_admin_password_hash,
     global_object_square_authentication_helper,
     global_int_app_id,
+    config_str_cookie_domain,
 )
 from square_administration.messages import messages
 from square_administration.pydantic_models.authentication import (
     RegisterUsernameV0,
     LoginUsernameV0,
 )
+from square_administration.utils.common import is_https
 
 router = APIRouter(
     tags=["authentication"],
@@ -69,7 +72,11 @@ async def register_username_v0(
         return value
         """
         refresh_token = response["data"]["main"]["refresh_token"]
+        refresh_token_expiry_time = response["data"]["main"][
+            "refresh_token_expiry_time"
+        ]
         del response["data"]["main"]["refresh_token"]
+        del response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["REGISTRATION_SUCCESSFUL"],
             data={"main": response["data"]["main"]},
@@ -82,6 +89,10 @@ async def register_username_v0(
             **create_cookie(
                 key="refresh_token|" + str(global_int_app_id),
                 value=refresh_token,
+                domain=config_str_cookie_domain,
+                expires=datetime.fromisoformat(refresh_token_expiry_time),
+                secure=is_https(),
+                http_only=True,
             )
         )
         return json_response
@@ -145,7 +156,11 @@ async def login_username_v0(
         return value
         """
         refresh_token = response["data"]["main"]["refresh_token"]
+        refresh_token_expiry_time = response["data"]["main"][
+            "refresh_token_expiry_time"
+        ]
         del response["data"]["main"]["refresh_token"]
+        del response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
             data={"main": response["data"]["main"]},
@@ -158,6 +173,10 @@ async def login_username_v0(
             **create_cookie(
                 key="refresh_token|" + str(global_int_app_id),
                 value=refresh_token,
+                domain=config_str_cookie_domain,
+                expires=datetime.fromisoformat(refresh_token_expiry_time),
+                secure=is_https(),
+                http_only=True,
             )
         )
         return json_response
