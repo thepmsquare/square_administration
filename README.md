@@ -16,6 +16,15 @@ pip install square_administration
 
 ## changelog
 
+### v2.3.0
+
+- env
+    - add new variable COOKIE_DOMAIN.
+- util
+    - add is_https.
+- authentication
+    - add domain, exp_time, secure and http_only flags for cookies generated in login_username_v0, register_username_v0.
+
 ### v2.2.1
 
 - authentication
