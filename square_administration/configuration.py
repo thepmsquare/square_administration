@@ -42,6 +42,7 @@ try:
     config_str_ssl_key_file_path = ldict_configuration["ENVIRONMENT"][
         "SSL_KEY_FILE_PATH"
     ]
+    config_str_cookie_domain = ldict_configuration["ENVIRONMENT"]["COOKIE_DOMAIN"]
     # ===========================================
 
     # ===========================================
