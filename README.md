@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v2.4.0
+
+- auto docker image build github action.
+
 ### v2.3.0
 
 - env
