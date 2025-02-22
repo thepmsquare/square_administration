@@ -10,3 +10,7 @@ class RegisterUsernameV0(BaseModel):
 class LoginUsernameV0(BaseModel):
     username: str
     password: str
+
+
+class RemoveAppForSelfV0(BaseModel):
+    password: str

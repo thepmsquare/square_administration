@@ -9,6 +9,10 @@ from requests import HTTPError
 from square_authentication_helper import TokenType
 from square_commons import get_api_output_in_standard_format
 from square_commons.api_utils import create_cookie
+from square_database_helper.pydantic_models import FilterConditionsV0, FiltersV0
+from square_database_structure.square import global_string_database_name
+from square_database_structure.square.authentication import global_string_schema_name
+from square_database_structure.square.authentication.tables import User, UserCredential
 
 from square_administration.configuration import (
     global_object_square_logger,
@@ -16,11 +20,13 @@ from square_administration.configuration import (
     global_object_square_authentication_helper,
     global_int_app_id,
     config_str_cookie_domain,
+    global_object_square_database_helper,
 )
 from square_administration.messages import messages
 from square_administration.pydantic_models.authentication import (
     RegisterUsernameV0,
     LoginUsernameV0,
+    RemoveAppForSelfV0,
 )
 from square_administration.utils.common import is_https
 
@@ -218,13 +224,46 @@ async def login_username_v0(
 @global_object_square_logger.async_auto_logger
 async def remove_app_for_self_v0(
     access_token: Annotated[str, Header()],
+    body: RemoveAppForSelfV0,
 ):
-
+    password = body.password
     try:
         """
         validation
         """
-        # pass
+        access_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
+            access_token, TokenType.access_token
+        )
+        user_id = access_token_payload["data"]["main"]["user_id"]
+        user_credentials_response = global_object_square_database_helper.get_rows_v0(
+            database_name=global_string_database_name,
+            schema_name=global_string_schema_name,
+            table_name=UserCredential.__tablename__,
+            filters=FiltersV0(
+                root={
+                    User.user_id.name: FilterConditionsV0(eq=user_id),
+                }
+            ),
+            columns=[UserCredential.user_credential_hashed_password.name],
+        )
+        hashed_password = user_credentials_response["data"]["main"][0][
+            UserCredential.user_credential_hashed_password.name
+        ]
+
+        if not (
+            bcrypt.checkpw(
+                password.encode("utf-8"),
+                hashed_password.encode("utf-8"),
+            )
+        ):
+            output_content = get_api_output_in_standard_format(
+                message=messages["INCORRECT_PASSWORD"],
+                log=f"incorrect password for user_id {user_id}.",
+            )
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content=output_content,
+            )
         """
         main process
         """

@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v3.0.0
+
+- add new parameter -> password in authentication -> remove_app_for_self_v0.
+
 ### v2.4.0
 
 - auto docker image build github action.
