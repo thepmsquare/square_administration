@@ -12,7 +12,7 @@ from square_database_structure.square import global_string_database_name
 from square_database_structure.square.authentication import (
     global_string_schema_name as global_string_schema_name_authentication,
 )
-from square_database_structure.square.authentication.tables import UserCredential
+from square_database_structure.square.authentication.tables import UserProfile
 from square_database_structure.square.greeting import global_string_schema_name
 from square_database_structure.square.greeting.tables import Greeting
 
@@ -77,33 +77,29 @@ async def get_all_greetings_v0(
             for x in response["data"]["main"]
             if x[Greeting.user_id.name] is not None
         }
-        user_credentials_response = global_object_square_database_helper.get_rows_v0(
+        user_profile_response = global_object_square_database_helper.get_rows_v0(
             database_name=global_string_database_name,
             schema_name=global_string_schema_name_authentication,
-            table_name=UserCredential.__tablename__,
+            table_name=UserProfile.__tablename__,
             filters=FiltersV0(
                 root={
-                    UserCredential.user_id.name: FilterConditionsV0(
-                        in_=list(all_user_ids)
-                    )
+                    UserProfile.user_id.name: FilterConditionsV0(in_=list(all_user_ids))
                 }
             ),
             columns=[
-                UserCredential.user_id.name,
-                UserCredential.user_credential_username.name,
+                UserProfile.user_id.name,
+                UserProfile.user_profile_username.name,
             ],
         )["data"]["main"]
-        user_credentials_map = {
-            x[UserCredential.user_id.name]: x[
-                UserCredential.user_credential_username.name
-            ]
-            for x in user_credentials_response
+        user_map = {
+            x[UserProfile.user_id.name]: x[UserProfile.user_profile_username.name]
+            for x in user_profile_response
         }
         response_clone = response
         response_clone["data"]["main"] = [
             {
                 **greeting,
-                UserCredential.user_credential_username.name: user_credentials_map.get(
+                UserProfile.user_profile_username.name: user_map.get(
                     greeting[Greeting.user_id.name]
                 ),
             }
