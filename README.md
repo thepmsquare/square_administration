@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v3.0.2
+
+- update logic to get usernames for non-anonymous greetings in get_all_greetings_v0.
+
 ### v3.0.1
 
 - add logging decorator to all functions.
