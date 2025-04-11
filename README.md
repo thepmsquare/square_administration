@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v3.1.0
+
+- add pytest as dependency.
+- add dummy test case.
+
 ### v3.0.2
 
 - update logic to get usernames for non-anonymous greetings in get_all_greetings_v0.

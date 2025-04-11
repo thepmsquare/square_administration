@@ -15,6 +15,8 @@ setup(
         "pydantic>=2.5.3",
         "requests>=2.32.3",
         "bcrypt>=4.2.0",
+        "pytest>=8.0.0",
+        "httpx>=0.27.2",
         "square_commons>=1.0.0",
         "square_logger>=1.0.0",
         "square_database_helper>=2.0.0",
