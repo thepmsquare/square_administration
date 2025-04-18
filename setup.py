@@ -18,7 +18,7 @@ setup(
         "pytest>=8.0.0",
         "httpx>=0.27.2",
         "square_commons>=1.0.0",
-        "square_logger>=1.0.0",
+        "square_logger>=2.0.0",
         "square_database_helper>=2.0.0",
         "square_database_structure>=1.0.0",
         "square_authentication_helper>=2.1.0",

@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v3.1.1
+
+- bump square_logger to 2.0.0
+
 ### v3.1.0
 
 - add pytest as dependency.

@@ -36,7 +36,7 @@ router = APIRouter(
 
 
 @router.post("/register_username/v0")
-@global_object_square_logger.async_auto_logger
+@global_object_square_logger.auto_logger()
 async def register_username_v0(
     body: RegisterUsernameV0,
 ):
@@ -137,7 +137,7 @@ async def register_username_v0(
 
 
 @router.post("/login_username/v0")
-@global_object_square_logger.async_auto_logger
+@global_object_square_logger.auto_logger()
 async def login_username_v0(
     body: LoginUsernameV0,
 ):
@@ -221,7 +221,7 @@ async def login_username_v0(
 
 
 @router.patch("/remove_app_for_self/v0")
-@global_object_square_logger.async_auto_logger
+@global_object_square_logger.auto_logger()
 async def remove_app_for_self_v0(
     access_token: Annotated[str, Header()],
     body: RemoveAppForSelfV0,
@@ -318,7 +318,7 @@ async def remove_app_for_self_v0(
 
 
 @router.delete("/logout/v0")
-@global_object_square_logger.async_auto_logger
+@global_object_square_logger.auto_logger()
 async def logout_v0(request: Request):
 
     try:
@@ -401,7 +401,7 @@ async def logout_v0(request: Request):
 
 
 @router.get("/generate_access_token/v0")
-@global_object_square_logger.async_auto_logger
+@global_object_square_logger.auto_logger()
 async def generate_access_token_v0(
     request: Request,
 ):

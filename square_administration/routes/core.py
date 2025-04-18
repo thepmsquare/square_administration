@@ -31,7 +31,7 @@ router = APIRouter(
 
 
 @router.post("/get_all_greetings/v0")
-@global_object_square_logger.async_auto_logger
+@global_object_square_logger.auto_logger()
 async def get_all_greetings_v0(
     access_token: Annotated[str, Header()], body: GetAllGreetingsV0
 ):
