@@ -18,7 +18,6 @@ from square_administration.configuration import (
     global_object_square_logger,
     config_str_admin_password_hash,
     global_object_square_authentication_helper,
-    global_int_app_id,
     config_str_cookie_domain,
     global_object_square_database_helper,
 )
@@ -28,7 +27,7 @@ from square_administration.pydantic_models.authentication import (
     LoginUsernameV0,
     RemoveAppForSelfV0,
 )
-from square_administration.utils.common import is_https
+from square_administration.utils.common import is_https, global_int_app_id
 
 router = APIRouter(
     tags=["authentication"],

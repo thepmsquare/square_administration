@@ -16,6 +16,17 @@ pip install square_administration
 
 ## changelog
 
+### v3.2.0
+
+- move global_int_app_id getting logic from configuration.py to utils->common
+- env
+    - add DB_IP, DB_PORT, DB_USERNAME, DB_PASSWORD
+    - add config.testing.ini
+    - file path reading through os.path.join method.
+- testing
+    - add conftest file to create and cleanup test database, also to patch config file.
+    - update existing tests to use the new fixtures.
+
 ### v3.1.1
 
 - bump square_logger to 2.0.0

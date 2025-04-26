@@ -20,10 +20,10 @@ from square_administration.configuration import (
     global_object_square_logger,
     global_object_square_database_helper,
     global_object_square_authentication_helper,
-    global_int_app_id,
 )
 from square_administration.messages import messages
 from square_administration.pydantic_models.core import GetAllGreetingsV0
+from square_administration.utils.common import global_int_app_id
 
 router = APIRouter(
     tags=["core"],
