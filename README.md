@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v3.2.1 (inprogress)
+
+- testing
+    - update get_patched_configuration and create_client_and_cleanup to be session scoped.
+
 ### v3.2.0
 
 - move global_int_app_id getting logic from configuration.py to utils->common
