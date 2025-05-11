@@ -11,6 +11,7 @@ from square_administration.configuration import (
     config_str_module_name,
     config_str_ssl_key_file_path,
     config_str_ssl_crt_file_path,
+    config_list_allow_origins,
 )
 from square_administration.routes import core, authentication
 from square_administration.utils.common import is_https
@@ -20,7 +21,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=["*"],
+    allow_origins=config_list_allow_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

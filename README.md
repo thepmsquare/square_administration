@@ -16,10 +16,12 @@ pip install square_administration
 
 ## changelog
 
-### v3.2.1 (inprogress)
+### v3.2.1
 
 - testing
     - update get_patched_configuration and create_client_and_cleanup to be session scoped.
+- env
+    - add ALLOW_ORIGINS
 
 ### v3.2.0
 
