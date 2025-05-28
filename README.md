@@ -16,6 +16,10 @@ pip install square_administration
 
 ## changelog
 
+### v3.2.2
+
+- remove config.ini and config.testing.ini from version control.
+
 ### v3.2.1
 
 - testing
