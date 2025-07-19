@@ -20,6 +20,7 @@ pip install square_administration
 
 - authentication
     - add new endpoint -> register_login_google_v0.
+    - add new endpoint -> reset_password_and_login_using_backup_code_v0.
 
 ### v3.2.2
 
