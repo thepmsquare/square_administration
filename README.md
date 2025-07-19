@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v3.3.0 (in progress)
+
+- authentication
+    - add new endpoint -> register_login_google_v0.
+
 ### v3.2.2
 
 - remove config.ini and config.testing.ini from version control.

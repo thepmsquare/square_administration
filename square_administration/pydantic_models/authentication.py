@@ -14,3 +14,7 @@ class LoginUsernameV0(BaseModel):
 
 class RemoveAppForSelfV0(BaseModel):
     password: str
+
+
+class RegisterLoginGoogleV0(BaseModel):
+    google_id: str
