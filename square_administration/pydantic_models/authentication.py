@@ -25,3 +25,10 @@ class ResetPasswordAndLoginUsingBackupCodeV0(BaseModel):
     username: str
     new_password: str
     logout_other_sessions: bool = False
+
+
+class ResetPasswordAndLoginUsingResetEmailCodeV0(BaseModel):
+    reset_email_code: str
+    username: str
+    new_password: str
+    logout_other_sessions: bool = False

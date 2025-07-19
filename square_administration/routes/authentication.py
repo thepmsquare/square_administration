@@ -28,6 +28,7 @@ from square_administration.pydantic_models.authentication import (
     RemoveAppForSelfV0,
     RegisterLoginGoogleV0,
     ResetPasswordAndLoginUsingBackupCodeV0,
+    ResetPasswordAndLoginUsingResetEmailCodeV0,
 )
 from square_administration.utils.common import is_https, global_int_app_id
 
@@ -563,6 +564,72 @@ async def reset_password_and_login_using_backup_code_v0(
         """
         response = global_object_square_authentication_helper.reset_password_and_login_using_backup_code_v0(
             backup_code=backup_code,
+            username=username,
+            new_password=new_password,
+            app_id=global_int_app_id,
+            logout_other_sessions=logout_other_sessions,
+        )
+        """
+        return value
+        """
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=response,
+        )
+    except HTTPError as http_error:
+        global_object_square_logger.logger.error(http_error, exc_info=True)
+        """
+        rollback logic
+        """
+        # pass
+        return JSONResponse(
+            status_code=http_error.response.status_code,
+            content=json.loads(http_error.response.content),
+        )
+    except HTTPException as http_exception:
+        global_object_square_logger.logger.error(http_exception, exc_info=True)
+        """
+        rollback logic
+        """
+        # pass
+        return JSONResponse(
+            status_code=http_exception.status_code, content=http_exception.detail
+        )
+    except Exception as e:
+        global_object_square_logger.logger.error(e, exc_info=True)
+        """
+        rollback logic
+        """
+        # pass
+        output_content = get_api_output_in_standard_format(
+            message=messages["GENERIC_500"],
+            log=str(e),
+        )
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=output_content
+        )
+
+
+@router.post("/reset_password_and_login_using_reset_email_code/v0")
+@global_object_square_logger.auto_logger()
+async def reset_password_and_login_using_reset_email_code_v0(
+    body: ResetPasswordAndLoginUsingResetEmailCodeV0,
+):
+    reset_email_code = body.reset_email_code
+    username = body.username
+    new_password = body.new_password
+    logout_other_sessions = body.logout_other_sessions
+    try:
+        """
+        validation
+        """
+        # pass
+        """
+        main process
+        """
+        response = global_object_square_authentication_helper.reset_password_and_login_using_reset_email_code_v0(
+            reset_email_code=reset_email_code,
             username=username,
             new_password=new_password,
             app_id=global_int_app_id,

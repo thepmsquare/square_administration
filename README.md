@@ -16,11 +16,12 @@ pip install square_administration
 
 ## changelog
 
-### v3.3.0 (in progress)
+### v3.3.0
 
 - authentication
     - add new endpoint -> register_login_google_v0.
     - add new endpoint -> reset_password_and_login_using_backup_code_v0.
+    - add new endpoint -> reset_password_and_login_using_reset_email_code_v0.
 
 ### v3.2.2
 
