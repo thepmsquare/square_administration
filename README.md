@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v3.3.1 (in progress)
+
+- authentication
+    - move refresh token to cookie in register_login_google_v0.
+
 ### v3.3.0
 
 - authentication
