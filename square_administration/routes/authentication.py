@@ -678,11 +678,31 @@ async def reset_password_and_login_using_reset_email_code_v0(
         """
         return value
         """
-
-        return JSONResponse(
-            status_code=status.HTTP_200_OK,
-            content=response,
+        refresh_token = response["data"]["main"]["refresh_token"]
+        refresh_token_expiry_time = response["data"]["main"][
+            "refresh_token_expiry_time"
+        ]
+        del response["data"]["main"]["refresh_token"]
+        del response["data"]["main"]["refresh_token_expiry_time"]
+        output_content = get_api_output_in_standard_format(
+            message=messages["LOGIN_SUCCESSFUL"],
+            data={"main": response["data"]["main"]},
         )
+        json_response = JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=output_content,
+        )
+        json_response.set_cookie(
+            **create_cookie(
+                key="refresh_token|" + str(global_int_app_id),
+                value=refresh_token,
+                domain=config_str_cookie_domain,
+                expires=datetime.fromisoformat(refresh_token_expiry_time),
+                secure=is_https(),
+                http_only=True,
+            )
+        )
+        return json_response
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
         """
