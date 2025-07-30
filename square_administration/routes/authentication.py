@@ -29,6 +29,7 @@ from square_administration.pydantic_models.authentication import (
     RegisterLoginGoogleV0,
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
+    UpdatePasswordV0,
 )
 from square_administration.utils.common import is_https, global_int_app_id
 
@@ -703,6 +704,85 @@ async def reset_password_and_login_using_reset_email_code_v0(
             )
         )
         return json_response
+    except HTTPError as http_error:
+        global_object_square_logger.logger.error(http_error, exc_info=True)
+        """
+        rollback logic
+        """
+        # pass
+        return JSONResponse(
+            status_code=http_error.response.status_code,
+            content=json.loads(http_error.response.content),
+        )
+    except HTTPException as http_exception:
+        global_object_square_logger.logger.error(http_exception, exc_info=True)
+        """
+        rollback logic
+        """
+        # pass
+        return JSONResponse(
+            status_code=http_exception.status_code, content=http_exception.detail
+        )
+    except Exception as e:
+        global_object_square_logger.logger.error(e, exc_info=True)
+        """
+        rollback logic
+        """
+        # pass
+        output_content = get_api_output_in_standard_format(
+            message=messages["GENERIC_500"],
+            log=str(e),
+        )
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=output_content
+        )
+
+
+@router.patch("/update_password/v0")
+@global_object_square_logger.auto_logger()
+async def update_password_v0(
+    request: Request,
+    body: UpdatePasswordV0,
+    access_token: Annotated[str, Header()],
+):
+    old_password = body.old_password
+    new_password = body.new_password
+    logout_other_sessions = body.logout_other_sessions
+    try:
+        """
+        validation
+        """
+        refresh_token = request.cookies.get("refresh_token|" + str(global_int_app_id))
+        preserve_session_refresh_token = refresh_token
+        if refresh_token is None:
+            preserve_session_refresh_token = None
+        refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
+            refresh_token, TokenType.refresh_token
+        )[
+            "data"
+        ][
+            "main"
+        ]
+        if refresh_token_payload["app_id"] != global_int_app_id:
+            preserve_session_refresh_token = None
+        """
+        main process
+        """
+        response = global_object_square_authentication_helper.update_password_v0(
+            old_password=old_password,
+            new_password=new_password,
+            access_token=access_token,
+            logout_other_sessions=logout_other_sessions,
+            preserve_session_refresh_token=preserve_session_refresh_token,
+        )
+        """
+        return value
+        """
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=response,
+        )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
         """

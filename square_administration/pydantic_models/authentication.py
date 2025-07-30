@@ -32,3 +32,9 @@ class ResetPasswordAndLoginUsingResetEmailCodeV0(BaseModel):
     username: str
     new_password: str
     logout_other_sessions: bool = False
+
+
+class UpdatePasswordV0(BaseModel):
+    old_password: str
+    new_password: str
+    logout_other_sessions: bool = False

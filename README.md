@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v3.4.0
+
+- authentication
+    - add update_password_v0.
+
 ### v3.3.1
 
 - authentication
