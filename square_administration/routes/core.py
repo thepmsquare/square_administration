@@ -44,7 +44,9 @@ async def get_all_greetings_v0(
         validation
         """
         access_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            token=access_token, token_type=TokenType.access_token
+            token=access_token,
+            token_type=TokenType.access_token,
+            app_id=global_int_app_id,
         )[
             "data"
         ][

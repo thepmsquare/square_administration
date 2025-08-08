@@ -4,7 +4,7 @@ package_name = "square_administration"
 
 setup(
     name=package_name,
-    version="3.4.0",
+    version="3.4.1",
     packages=find_packages(),
     package_data={
         package_name: ["data/*"],
@@ -21,7 +21,7 @@ setup(
         "square_logger>=2.0.0",
         "square_database_helper>=2.0.0",
         "square_database_structure>=1.0.0",
-        "square_authentication_helper>=2.1.0",
+        "square_authentication_helper>=3.0.0",
     ],
     extras_require={},
     author="thePmSquare",

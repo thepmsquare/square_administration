@@ -16,6 +16,11 @@ pip install square_administration
 
 ## changelog
 
+### v3.4.1
+
+- dependencies
+    - square_authentication_helper>=3.0.0 and fix breaking changes for validate_and_get_payload_from_token_v0.
+
 ### v3.4.0
 
 - authentication

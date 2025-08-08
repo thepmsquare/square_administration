@@ -235,7 +235,7 @@ async def remove_app_for_self_v0(
         validation
         """
         access_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            access_token, TokenType.access_token
+            access_token, TokenType.access_token, app_id=global_int_app_id
         )
         user_id = access_token_payload["data"]["main"]["user_id"]
         user_credentials_response = global_object_square_database_helper.get_rows_v0(
@@ -340,7 +340,7 @@ async def logout_v0(request: Request):
                 content=output_content,
             )
         refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token, TokenType.refresh_token
+            refresh_token, TokenType.refresh_token, app_id=global_int_app_id
         )[
             "data"
         ][
@@ -424,7 +424,7 @@ async def generate_access_token_v0(
                 content=output_content,
             )
         refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token, TokenType.refresh_token
+            refresh_token, TokenType.refresh_token, app_id=global_int_app_id
         )[
             "data"
         ][
@@ -757,7 +757,7 @@ async def update_password_v0(
         if refresh_token is None:
             preserve_session_refresh_token = None
         refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token, TokenType.refresh_token
+            refresh_token, TokenType.refresh_token, app_id=global_int_app_id
         )[
             "data"
         ][
