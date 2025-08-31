@@ -8,7 +8,10 @@ administration business layer for my personal server.
 
 ## goals
 
-(wip)
+- administration-specific logic
+- api grouped by usecase
+- integration with square_*
+- simple and sufficient
 
 ## installation
 
