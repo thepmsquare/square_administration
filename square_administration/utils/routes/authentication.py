@@ -35,7 +35,7 @@ from square_administration.utils.common import is_https, global_int_app_id
 
 
 @global_object_square_logger.auto_logger()
-async def util_register_username_v0(
+def util_register_username_v0(
     body: RegisterUsernameV0,
 ):
     username = body.username
@@ -135,7 +135,7 @@ async def util_register_username_v0(
 
 
 @global_object_square_logger.auto_logger()
-async def util_login_username_v0(
+def util_login_username_v0(
     body: LoginUsernameV0,
 ):
     username = body.username
@@ -218,7 +218,7 @@ async def util_login_username_v0(
 
 
 @global_object_square_logger.auto_logger()
-async def util_remove_app_for_self_v0(
+def util_remove_app_for_self_v0(
     access_token: Annotated[str, Header()],
     body: RemoveAppForSelfV0,
 ):
@@ -314,7 +314,7 @@ async def util_remove_app_for_self_v0(
 
 
 @global_object_square_logger.auto_logger()
-async def util_logout_v0(request: Request):
+def util_logout_v0(request: Request):
 
     try:
         """
@@ -396,7 +396,7 @@ async def util_logout_v0(request: Request):
 
 
 @global_object_square_logger.auto_logger()
-async def util_generate_access_token_v0(
+def util_generate_access_token_v0(
     request: Request,
 ):
 
@@ -479,7 +479,7 @@ async def util_generate_access_token_v0(
 
 
 @global_object_square_logger.auto_logger()
-async def util_register_login_google_v0(body: RegisterLoginGoogleV0):
+def util_register_login_google_v0(body: RegisterLoginGoogleV0):
     google_id = body.google_id
     try:
         """
@@ -557,7 +557,7 @@ async def util_register_login_google_v0(body: RegisterLoginGoogleV0):
 
 
 @global_object_square_logger.auto_logger()
-async def util_reset_password_and_login_using_backup_code_v0(
+def util_reset_password_and_login_using_backup_code_v0(
     body: ResetPasswordAndLoginUsingBackupCodeV0,
 ):
     backup_code = body.backup_code
@@ -642,7 +642,7 @@ async def util_reset_password_and_login_using_backup_code_v0(
 
 
 @global_object_square_logger.auto_logger()
-async def util_reset_password_and_login_using_reset_email_code_v0(
+def util_reset_password_and_login_using_reset_email_code_v0(
     body: ResetPasswordAndLoginUsingResetEmailCodeV0,
 ):
     reset_email_code = body.reset_email_code
@@ -727,7 +727,7 @@ async def util_reset_password_and_login_using_reset_email_code_v0(
 
 
 @global_object_square_logger.auto_logger()
-async def util_update_password_v0(
+def util_update_password_v0(
     request: Request,
     body: UpdatePasswordV0,
     access_token: Annotated[str, Header()],

@@ -27,7 +27,7 @@ from square_administration.utils.common import global_int_app_id
 
 
 @global_object_square_logger.auto_logger()
-async def util_get_all_greetings_v0(
+def util_get_all_greetings_v0(
     access_token: Annotated[str, Header()], body: GetAllGreetingsV0
 ):
     order_by = body.order_by
