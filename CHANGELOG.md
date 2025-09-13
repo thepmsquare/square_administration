@@ -1,6 +1,11 @@
 # changelog
 
-## v3.4.4
+## v3.4.5
+
+- core
+    - bugfix: change logic for util_get_all_greetings_v0 as per db schema changes.
+
+## v3.4.4 (unstable)
 
 - bugfix remove async keyword from all util functions.
 

@@ -12,7 +12,7 @@ from square_database_structure.square import global_string_database_name
 from square_database_structure.square.authentication import (
     global_string_schema_name as global_string_schema_name_authentication,
 )
-from square_database_structure.square.authentication.tables import UserProfile
+from square_database_structure.square.authentication.tables import User
 from square_database_structure.square.greeting import global_string_schema_name
 from square_database_structure.square.greeting.tables import Greeting
 
@@ -74,31 +74,26 @@ def util_get_all_greetings_v0(
             for x in response["data"]["main"]
             if x[Greeting.user_id.name] is not None
         }
-        user_profile_response = global_object_square_database_helper.get_rows_v0(
+        user_response = global_object_square_database_helper.get_rows_v0(
             database_name=global_string_database_name,
             schema_name=global_string_schema_name_authentication,
-            table_name=UserProfile.__tablename__,
+            table_name=User.__tablename__,
             filters=FiltersV0(
-                root={
-                    UserProfile.user_id.name: FilterConditionsV0(in_=list(all_user_ids))
-                }
+                root={User.user_id.name: FilterConditionsV0(in_=list(all_user_ids))}
             ),
             columns=[
-                UserProfile.user_id.name,
-                UserProfile.user_profile_username.name,
+                User.user_id.name,
+                User.user_username.name,
             ],
         )["data"]["main"]
         user_map = {
-            x[UserProfile.user_id.name]: x[UserProfile.user_profile_username.name]
-            for x in user_profile_response
+            x[User.user_id.name]: x[User.user_username.name] for x in user_response
         }
         response_clone = response
         response_clone["data"]["main"] = [
             {
                 **greeting,
-                UserProfile.user_profile_username.name: user_map.get(
-                    greeting[Greeting.user_id.name]
-                ),
+                User.user_username.name: user_map.get(greeting[Greeting.user_id.name]),
             }
             for greeting in response["data"]["main"]
         ]

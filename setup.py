@@ -4,7 +4,7 @@ package_name = "square_administration"
 
 setup(
     name=package_name,
-    version="3.4.4",
+    version="3.4.5",
     packages=find_packages(),
     package_data={
         package_name: ["data/*"],
