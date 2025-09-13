@@ -1,5 +1,9 @@
 # changelog
 
+## v3.4.3
+
+- move application logic from routes to util_functions.
+
 ## v3.4.2
 
 - docs
