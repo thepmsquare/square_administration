@@ -1,5 +1,12 @@
 # changelog
 
+## v3.4.6
+
+- env
+    - SQUARE_LOGGER -> FORMATTER_CHOICE + ENABLE_REDACTION
+- dependencies
+    - square_logger>=3.0.0.
+
 ## v3.4.5
 
 - core

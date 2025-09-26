@@ -4,7 +4,7 @@ package_name = "square_administration"
 
 setup(
     name=package_name,
-    version="3.4.5",
+    version="3.4.6",
     packages=find_packages(),
     package_data={
         package_name: ["data/*"],
@@ -18,7 +18,7 @@ setup(
         "pytest>=8.0.0",
         "httpx>=0.27.2",
         "square_commons>=2.1.0",
-        "square_logger>=2.0.0",
+        "square_logger>=3.0.0",
         "square_database_helper>=2.0.0",
         "square_database_structure>=1.0.0",
         "square_authentication_helper>=3.0.0",
