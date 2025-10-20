@@ -1,5 +1,10 @@
 # changelog
 
+## v3.4.8
+
+- dependencies
+    - create all and dev sections for pytest dependencies.
+
 ## v3.4.7
 
 - remove setup.py and switch to pyproject.toml
