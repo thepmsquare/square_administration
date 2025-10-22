@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv-build"]
+build-backend = "uv_build"
 
 [project]
 name = "square_administration"
-version = "3.4.8"
+version = "3.4.9"
 description = "common business layer for my personal server."
 readme = "README.md"
 readme-content-type = "text/markdown"
@@ -41,6 +41,7 @@ classifiers = [
     "Framework :: FastAPI"
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["square_administration"]
-include = ["square_administration/data/*"]
+[tool.uv.build-backend]
+module-name = "square_administration"
+module-root = ""
+source-include = ["square_administration/data/*"]
