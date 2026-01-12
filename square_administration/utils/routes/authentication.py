@@ -26,7 +26,6 @@ from square_administration.pydantic_models.authentication import (
     RegisterUsernameV0,
     LoginUsernameV0,
     RemoveAppForSelfV0,
-    RegisterLoginGoogleV0,
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
@@ -444,84 +443,6 @@ def util_generate_access_token_v0(
             status_code=status.HTTP_200_OK,
             content=response,
         )
-    except HTTPError as http_error:
-        global_object_square_logger.logger.error(http_error, exc_info=True)
-        """
-        rollback logic
-        """
-        # pass
-        return JSONResponse(
-            status_code=http_error.response.status_code,
-            content=json.loads(http_error.response.content),
-        )
-    except HTTPException as http_exception:
-        global_object_square_logger.logger.error(http_exception, exc_info=True)
-        """
-        rollback logic
-        """
-        # pass
-        return JSONResponse(
-            status_code=http_exception.status_code, content=http_exception.detail
-        )
-    except Exception as e:
-        global_object_square_logger.logger.error(e, exc_info=True)
-        """
-        rollback logic
-        """
-        # pass
-        output_content = get_api_output_in_standard_format(
-            message=messages["GENERIC_500"],
-            log=str(e),
-        )
-        return JSONResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=output_content
-        )
-
-
-@global_object_square_logger.auto_logger()
-def util_register_login_google_v0(body: RegisterLoginGoogleV0):
-    google_id = body.google_id
-    try:
-        """
-        validation
-        """
-        # pass
-        """
-        main process
-        """
-        response = global_object_square_authentication_helper.register_login_google_v0(
-            google_id=google_id,
-            assign_app_id_if_missing=False,
-            app_id=global_int_app_id,
-        )
-        """
-        return value
-        """
-        refresh_token = response["data"]["main"]["refresh_token"]
-        refresh_token_expiry_time = response["data"]["main"][
-            "refresh_token_expiry_time"
-        ]
-        del response["data"]["main"]["refresh_token"]
-        del response["data"]["main"]["refresh_token_expiry_time"]
-        output_content = get_api_output_in_standard_format(
-            message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
-        )
-        json_response = JSONResponse(
-            status_code=status.HTTP_200_OK,
-            content=output_content,
-        )
-        json_response.set_cookie(
-            **create_cookie(
-                key="refresh_token|" + str(global_int_app_id),
-                value=refresh_token,
-                domain=config_str_cookie_domain,
-                expires=datetime.fromisoformat(refresh_token_expiry_time),
-                secure=is_https(),
-                http_only=True,
-            )
-        )
-        return json_response
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
         """

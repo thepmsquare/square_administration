@@ -1,5 +1,9 @@
 # changelog
 
+## v4.0.0
+
+- breaking change: remove register_login_google_v0.
+
 ## v3.4.9
 
 - switch build-system to uv.

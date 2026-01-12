@@ -12,7 +12,6 @@ from square_administration.pydantic_models.authentication import (
     RegisterUsernameV0,
     LoginUsernameV0,
     RemoveAppForSelfV0,
-    RegisterLoginGoogleV0,
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
@@ -23,7 +22,6 @@ from square_administration.utils.routes.authentication import (
     util_remove_app_for_self_v0,
     util_logout_v0,
     util_generate_access_token_v0,
-    util_register_login_google_v0,
     util_reset_password_and_login_using_backup_code_v0,
     util_reset_password_and_login_using_reset_email_code_v0,
     util_update_password_v0,
@@ -130,26 +128,6 @@ async def generate_access_token_v0(
     try:
         return util_generate_access_token_v0(
             request=request,
-        )
-    except HTTPException as he:
-        global_object_square_logger.logger.error(he, exc_info=True)
-        return JSONResponse(status_code=he.status_code, content=he.detail)
-    except Exception as e:
-        global_object_square_logger.logger.error(e, exc_info=True)
-        output_content = get_api_output_in_standard_format(
-            message=messages["GENERIC_500"], log=str(e)
-        )
-        return JSONResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content=output_content
-        )
-
-
-@router.post("/register_login_google/v0")
-@global_object_square_logger.auto_logger()
-async def register_login_google_v0(body: RegisterLoginGoogleV0):
-    try:
-        return util_register_login_google_v0(
-            body=body,
         )
     except HTTPException as he:
         global_object_square_logger.logger.error(he, exc_info=True)

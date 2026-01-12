@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "square_administration"
-version = "3.4.9"
+version = "4.0.0"
 description = "common business layer for my personal server."
 readme = "README.md"
 readme-content-type = "text/markdown"

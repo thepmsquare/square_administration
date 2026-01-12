@@ -16,10 +16,6 @@ class RemoveAppForSelfV0(BaseModel):
     password: str
 
 
-class RegisterLoginGoogleV0(BaseModel):
-    google_id: str
-
-
 class ResetPasswordAndLoginUsingBackupCodeV0(BaseModel):
     backup_code: str
     username: str
