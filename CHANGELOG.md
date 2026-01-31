@@ -1,5 +1,11 @@
 # changelog
 
+## v4.0.1
+
+- set response_as_pydantic True for all square_database_helper utils instead of dict, for better typehints.
+- dependencies
+    - update "square_database_helper>=2.7.1"
+
 ## v4.0.0
 
 - breaking change: remove register_login_google_v0.

@@ -68,10 +68,11 @@ def util_get_all_greetings_v0(
             order_by=order_by,
             limit=limit,
             offset=offset,
+            response_as_pydantic=True,
         )
         all_user_ids = {
             x[Greeting.user_id.name]
-            for x in response["data"]["main"]
+            for x in response.data.main
             if x[Greeting.user_id.name] is not None
         }
         user_response = global_object_square_database_helper.get_rows_v0(
@@ -85,17 +86,18 @@ def util_get_all_greetings_v0(
                 User.user_id.name,
                 User.user_username.name,
             ],
-        )["data"]["main"]
+            response_as_pydantic=True,
+        ).data.main
         user_map = {
             x[User.user_id.name]: x[User.user_username.name] for x in user_response
         }
         response_clone = response
-        response_clone["data"]["main"] = [
+        response_clone.data.main = [
             {
                 **greeting,
                 User.user_username.name: user_map.get(greeting[Greeting.user_id.name]),
             }
-            for greeting in response["data"]["main"]
+            for greeting in response.data.main
         ]
 
         """
@@ -103,7 +105,7 @@ def util_get_all_greetings_v0(
         """
         output_content = get_api_output_in_standard_format(
             message=messages["GENERIC_READ_SUCCESSFUL"],
-            data=response_clone["data"],
+            data=response_clone.data,
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,

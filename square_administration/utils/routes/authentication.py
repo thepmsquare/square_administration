@@ -240,8 +240,9 @@ def util_remove_app_for_self_v0(
                 }
             ),
             columns=[UserCredential.user_credential_hashed_password.name],
+            response_as_pydantic=True,
         )
-        hashed_password = user_credentials_response["data"]["main"][0][
+        hashed_password = user_credentials_response.data.main[0][
             UserCredential.user_credential_hashed_password.name
         ]
 

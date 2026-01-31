@@ -33,4 +33,5 @@ global_int_app_id = global_object_square_database_helper.get_rows_v0(
         }
     ),
     columns=[App.app_id.name],
-)["data"]["main"][0][App.app_id.name]
+    response_as_pydantic=True,
+).data.main[0][App.app_id.name]
