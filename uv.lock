@@ -528,7 +528,7 @@ wheels = [
 
 [[package]]
 name = "square-administration"
-version = "4.0.1"
+version = "4.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "bcrypt" },
@@ -561,7 +561,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'all'", specifier = ">=8.3.3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.3" },
     { name = "requests", specifier = ">=2.32.3" },
-    { name = "square-authentication-helper", specifier = ">=3.0.0" },
+    { name = "square-authentication-helper", specifier = ">=3.3.0" },
     { name = "square-commons", specifier = ">=2.1.0" },
     { name = "square-database-helper", specifier = ">=2.7.1" },
     { name = "square-database-structure", specifier = ">=1.0.0" },
@@ -572,15 +572,15 @@ provides-extras = ["all", "dev"]
 
 [[package]]
 name = "square-authentication-helper"
-version = "3.0.3"
+version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "square-commons" },
     { name = "square-database-structure" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ad/73/dfd5577c35cd30a6c3e637194edf49da68d17582a56589ceb830b2eeb661/square_authentication_helper-3.0.3.tar.gz", hash = "sha256:8fc7ef27d46f95c55a8e2b09783bec0f7d1896b66513eaeacd1722185144c96e", size = 16765, upload-time = "2025-10-17T17:04:38.659Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/18/83880046a2a7d3e0efbebb6fb3d5eae4cb02f79f4c0c2da21ec6bebf2429/square_authentication_helper-3.3.0.tar.gz", hash = "sha256:684b65e469290ddd345898b947fbda46c4f6bef40fcdb9d7fec80ea317cf9a94", size = 4577, upload-time = "2026-02-03T06:29:53.378Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a1/d8/acf4d7f6b7cb97a41a39d606928ad5ce3bac5df5229a6d53f50e5bd01ed8/square_authentication_helper-3.0.3-py3-none-any.whl", hash = "sha256:7e566b9091179f90790058e4a9c5b528da5068a0f6ebab70854dc9ecc3c8fbb6", size = 16283, upload-time = "2025-10-17T17:04:37.561Z" },
+    { url = "https://files.pythonhosted.org/packages/b9/a0/bf7102b8f932d9036b739fe6a852a3f7c5e946fb74a340a493dec7696e6b/square_authentication_helper-3.3.0-py3-none-any.whl", hash = "sha256:be553cace9500f62fc84e87cd9ba36c0209faf7d14dd6a4766d8709fae10ec9f", size = 6003, upload-time = "2026-02-03T06:29:51.849Z" },
 ]
 
 [[package]]

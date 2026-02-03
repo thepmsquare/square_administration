@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "square_administration"
-version = "4.0.1"
+version = "4.0.2"
 description = "common business layer for my personal server."
 readme = "README.md"
 readme-content-type = "text/markdown"
@@ -26,7 +26,7 @@ dependencies = [
     "square_logger>=3.0.0",
     "square_database_helper>=2.7.1",
     "square_database_structure>=1.0.0",
-    "square_authentication_helper>=3.0.0",
+    "square_authentication_helper>=3.3.0",
 ]
 optional-dependencies = { all = ["pytest>=8.3.3"], dev = ["pytest>=8.3.3"] }
 classifiers = [

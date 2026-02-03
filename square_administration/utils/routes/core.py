@@ -42,11 +42,8 @@ def util_get_all_greetings_v0(
             token=access_token,
             token_type=TokenType.access_token,
             app_id=global_int_app_id,
-        )[
-            "data"
-        ][
-            "main"
-        ]
+            response_as_pydantic=True,
+        ).data.main
         if access_token_payload["app_id"] != global_int_app_id:
             output_content = get_api_output_in_standard_format(
                 message=messages["INCORRECT_ACCESS_TOKEN"], log="app id is incorrect."

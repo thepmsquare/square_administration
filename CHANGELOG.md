@@ -1,5 +1,11 @@
 # changelog
 
+## v4.0.2
+
+- set response_as_pydantic True for all square_authentication_helper utils instead of dict, for better typehints.
+- dependencies
+    - update "square_authentication_helper>=3.3.0"
+
 ## v4.0.1
 
 - set response_as_pydantic True for all square_database_helper utils instead of dict, for better typehints.

@@ -70,19 +70,19 @@ def util_register_username_v0(
             username=username,
             password=password,
             app_id=global_int_app_id,
+            response_as_pydantic=True,
         )
         """
         return value
         """
-        refresh_token = response["data"]["main"]["refresh_token"]
-        refresh_token_expiry_time = response["data"]["main"][
-            "refresh_token_expiry_time"
-        ]
-        del response["data"]["main"]["refresh_token"]
-        del response["data"]["main"]["refresh_token_expiry_time"]
+        refresh_token = response.data.main.refresh_token
+        refresh_token_expiry_time = response.data.main.refresh_token_expiry_time
+        modified_response = response.model_dump()
+        del modified_response["data"]["main"]["refresh_token"]
+        del modified_response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["REGISTRATION_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
+            data={"main": modified_response["data"]["main"]},
         )
         json_response = JSONResponse(
             status_code=status.HTTP_201_CREATED,
@@ -153,19 +153,19 @@ def util_login_username_v0(
             password=password,
             app_id=global_int_app_id,
             assign_app_id_if_missing=False,
+            response_as_pydantic=True,
         )
         """
         return value
         """
-        refresh_token = response["data"]["main"]["refresh_token"]
-        refresh_token_expiry_time = response["data"]["main"][
-            "refresh_token_expiry_time"
-        ]
-        del response["data"]["main"]["refresh_token"]
-        del response["data"]["main"]["refresh_token_expiry_time"]
+        refresh_token = response.data.main.refresh_token
+        refresh_token_expiry_time = response.data.main.refresh_token_expiry_time
+        modified_response = response.model_dump()
+        del modified_response["data"]["main"]["refresh_token"]
+        del modified_response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
+            data={"main": modified_response["data"]["main"]},
         )
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
@@ -227,9 +227,12 @@ def util_remove_app_for_self_v0(
         validation
         """
         access_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            access_token, TokenType.access_token, app_id=global_int_app_id
+            access_token,
+            TokenType.access_token,
+            app_id=global_int_app_id,
+            response_as_pydantic=True,
         )
-        user_id = access_token_payload["data"]["main"]["user_id"]
+        user_id = access_token_payload.data.main["user_id"]
         user_credentials_response = global_object_square_database_helper.get_rows_v0(
             database_name=global_string_database_name,
             schema_name=global_string_schema_name,
@@ -267,13 +270,14 @@ def util_remove_app_for_self_v0(
             access_token=access_token,
             app_ids_to_add=[],
             app_ids_to_remove=[global_int_app_id],
+            response_as_pydantic=True,
         )
         """
         return value
         """
         output_content = get_api_output_in_standard_format(
             message=messages["GENERIC_UPDATE_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
+            data={"main": response.data.main},
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
@@ -332,12 +336,11 @@ def util_logout_v0(request: Request):
                 content=output_content,
             )
         refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token, TokenType.refresh_token, app_id=global_int_app_id
-        )[
-            "data"
-        ][
-            "main"
-        ]
+            refresh_token,
+            TokenType.refresh_token,
+            app_id=global_int_app_id,
+            response_as_pydantic=True,
+        ).data.main
         if refresh_token_payload["app_id"] != global_int_app_id:
             output_content = get_api_output_in_standard_format(
                 message=messages["INCORRECT_REFRESH_TOKEN"],
@@ -351,7 +354,7 @@ def util_logout_v0(request: Request):
         main process
         """
         response = global_object_square_authentication_helper.logout_v0(
-            refresh_token=refresh_token
+            refresh_token=refresh_token, response_as_pydantic=True
         )
         """
         return value
@@ -359,7 +362,7 @@ def util_logout_v0(request: Request):
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=response,
+            content=response.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
@@ -415,12 +418,11 @@ def util_generate_access_token_v0(
                 content=output_content,
             )
         refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token, TokenType.refresh_token, app_id=global_int_app_id
-        )[
-            "data"
-        ][
-            "main"
-        ]
+            refresh_token,
+            TokenType.refresh_token,
+            app_id=global_int_app_id,
+            response_as_pydantic=True,
+        ).data.main
         if refresh_token_payload["app_id"] != global_int_app_id:
             output_content = get_api_output_in_standard_format(
                 message=messages["INCORRECT_REFRESH_TOKEN"],
@@ -434,7 +436,7 @@ def util_generate_access_token_v0(
         main process
         """
         response = global_object_square_authentication_helper.generate_access_token_v0(
-            refresh_token=refresh_token
+            refresh_token=refresh_token, response_as_pydantic=True
         )
         """
         return value
@@ -442,7 +444,7 @@ def util_generate_access_token_v0(
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=response,
+            content=response.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
@@ -500,19 +502,19 @@ def util_reset_password_and_login_using_backup_code_v0(
             new_password=new_password,
             app_id=global_int_app_id,
             logout_other_sessions=logout_other_sessions,
+            response_as_pydantic=True,
         )
         """
         return value
         """
-        refresh_token = response["data"]["main"]["refresh_token"]
-        refresh_token_expiry_time = response["data"]["main"][
-            "refresh_token_expiry_time"
-        ]
-        del response["data"]["main"]["refresh_token"]
-        del response["data"]["main"]["refresh_token_expiry_time"]
+        refresh_token = response.data.main.refresh_token
+        refresh_token_expiry_time = response.data.main.refresh_token_expiry_time
+        modified_response = response.model_dump()
+        del modified_response["data"]["main"]["refresh_token"]
+        del modified_response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
+            data={"main": modified_response["data"]["main"]},
         )
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
@@ -585,19 +587,19 @@ def util_reset_password_and_login_using_reset_email_code_v0(
             new_password=new_password,
             app_id=global_int_app_id,
             logout_other_sessions=logout_other_sessions,
+            response_as_pydantic=True,
         )
         """
         return value
         """
-        refresh_token = response["data"]["main"]["refresh_token"]
-        refresh_token_expiry_time = response["data"]["main"][
-            "refresh_token_expiry_time"
-        ]
-        del response["data"]["main"]["refresh_token"]
-        del response["data"]["main"]["refresh_token_expiry_time"]
+        refresh_token = response.data.main.refresh_token
+        refresh_token_expiry_time = response.data.main.refresh_token_expiry_time
+        modified_response = response.model_dump()
+        del modified_response["data"]["main"]["refresh_token"]
+        del modified_response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
+            data={"main": modified_response["data"]["main"]},
         )
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
@@ -666,12 +668,11 @@ def util_update_password_v0(
         if refresh_token is None:
             preserve_session_refresh_token = None
         refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token, TokenType.refresh_token, app_id=global_int_app_id
-        )[
-            "data"
-        ][
-            "main"
-        ]
+            refresh_token,
+            TokenType.refresh_token,
+            app_id=global_int_app_id,
+            response_as_pydantic=True,
+        ).data.main
         if refresh_token_payload["app_id"] != global_int_app_id:
             preserve_session_refresh_token = None
         """
@@ -683,6 +684,7 @@ def util_update_password_v0(
             access_token=access_token,
             logout_other_sessions=logout_other_sessions,
             preserve_session_refresh_token=preserve_session_refresh_token,
+            response_as_pydantic=True,
         )
         """
         return value
@@ -690,7 +692,7 @@ def util_update_password_v0(
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=response,
+            content=response.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
