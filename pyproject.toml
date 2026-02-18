@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "square_administration"
-version = "4.0.2"
+version = "4.1.0"
 description = "common business layer for my personal server."
 readme = "README.md"
 readme-content-type = "text/markdown"
@@ -22,7 +22,7 @@ dependencies = [
     "requests>=2.32.3",
     "bcrypt>=4.2.0",
     "httpx>=0.27.2",
-    "square_commons>=2.1.0",
+    "square_commons>=3.1.0",
     "square_logger>=3.0.0",
     "square_database_helper>=2.7.1",
     "square_database_structure>=1.0.0",

@@ -4,6 +4,17 @@ from typing import Annotated
 from fastapi import Header, status, HTTPException
 from fastapi.responses import JSONResponse
 from requests import HTTPError
+from square_administration.configuration import (
+    global_object_square_logger,
+    global_object_square_database_helper,
+    global_object_square_authentication_helper,
+)
+from square_administration.messages import messages
+from square_administration.pydantic_models.core import (
+    GetAllGreetingsV0,
+    GetAllGreetingsV0Response,
+)
+from square_administration.utils.common import global_int_app_id
 from square_authentication_helper import TokenType
 from square_commons import get_api_output_in_standard_format
 from square_database_helper import FiltersV0
@@ -15,15 +26,6 @@ from square_database_structure.square.authentication import (
 from square_database_structure.square.authentication.tables import User
 from square_database_structure.square.greeting import global_string_schema_name
 from square_database_structure.square.greeting.tables import Greeting
-
-from square_administration.configuration import (
-    global_object_square_logger,
-    global_object_square_database_helper,
-    global_object_square_authentication_helper,
-)
-from square_administration.messages import messages
-from square_administration.pydantic_models.core import GetAllGreetingsV0
-from square_administration.utils.common import global_int_app_id
 
 
 @global_object_square_logger.auto_logger()
@@ -100,13 +102,15 @@ def util_get_all_greetings_v0(
         """
         return value
         """
+        data_pydantic = GetAllGreetingsV0Response(**response_clone.data)
         output_content = get_api_output_in_standard_format(
             message=messages["GENERIC_READ_SUCCESSFUL"],
-            data=response_clone.data,
+            data=data_pydantic.model_dump(),
+            as_dict=False,
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=output_content,
+            content=output_content.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)

@@ -2,21 +2,28 @@ from typing import Annotated
 
 from fastapi import APIRouter, Header, status, HTTPException
 from fastapi.responses import JSONResponse
-from square_commons import get_api_output_in_standard_format
-
 from square_administration.configuration import (
     global_object_square_logger,
 )
 from square_administration.messages import messages
-from square_administration.pydantic_models.core import GetAllGreetingsV0
+from square_administration.pydantic_models.core import (
+    GetAllGreetingsV0,
+    GetAllGreetingsV0Response,
+)
 from square_administration.utils.routes.core import util_get_all_greetings_v0
+from square_commons import get_api_output_in_standard_format
+from square_commons.api_utils import StandardResponse
 
 router = APIRouter(
     tags=["core"],
 )
 
 
-@router.post("/get_all_greetings/v0")
+@router.post(
+    "/get_all_greetings/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=StandardResponse[GetAllGreetingsV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def get_all_greetings_v0(
     access_token: Annotated[str, Header()], body: GetAllGreetingsV0

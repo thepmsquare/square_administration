@@ -1,5 +1,17 @@
 # changelog
 
+## v4.1.0 (in progress)
+
+- models
+    - add the following in core:
+        - GetAllGreetingsV0ResponseMain.
+        - GetAllGreetingsV0Response.
+- routes
+    - add output format validation in the following in core:
+        - get_all_greetings_v0
+- dependencies
+    - update "square_commons>=3.1.0"
+
 ## v4.0.2
 
 - set response_as_pydantic True for all square_authentication_helper utils instead of dict, for better typehints.

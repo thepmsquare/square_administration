@@ -10,3 +10,18 @@ class GetAllGreetingsV0(BaseModel):
     )
     limit: Optional[int] = None
     offset: int = 0
+
+
+class GetAllGreetingsV0ResponseMain(BaseModel):
+    greeting_anonymous_sender_name: str | None
+    user_id: str | None
+    greeting_id: int
+    greeting_datetime: str
+    greeting_is_anonymous: bool
+    greeting_text: str | None
+    user_username: str | None
+
+
+class GetAllGreetingsV0Response(BaseModel):
+    main: List[GetAllGreetingsV0ResponseMain]
+    total_count: int
