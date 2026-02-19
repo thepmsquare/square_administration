@@ -34,3 +34,16 @@ class UpdatePasswordV0(BaseModel):
     old_password: str
     new_password: str
     logout_other_sessions: bool = False
+
+
+class RegisterUsernameV0ResponseMain(BaseModel):
+    user_id: str
+    username: str
+    app_id: int | None
+    access_token: str | None
+    refresh_token: str | None
+    refresh_token_expiry_time: str | None
+
+
+class RegisterUsernameV0Response(BaseModel):
+    main: RegisterUsernameV0ResponseMain

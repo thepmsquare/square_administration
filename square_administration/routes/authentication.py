@@ -2,8 +2,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, status, HTTPException, Header, Request
 from fastapi.responses import JSONResponse
-from square_commons import get_api_output_in_standard_format
-
 from square_administration.configuration import (
     global_object_square_logger,
 )
@@ -15,6 +13,7 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
+    RegisterUsernameV0Response,
 )
 from square_administration.utils.routes.authentication import (
     util_register_username_v0,
@@ -26,13 +25,19 @@ from square_administration.utils.routes.authentication import (
     util_reset_password_and_login_using_reset_email_code_v0,
     util_update_password_v0,
 )
+from square_commons import get_api_output_in_standard_format
+from square_commons.api_utils import StandardResponse
 
 router = APIRouter(
     tags=["authentication"],
 )
 
 
-@router.post("/register_username/v0")
+@router.post(
+    "/register_username/v0",
+    status_code=status.HTTP_201_CREATED,
+    response_model=StandardResponse[RegisterUsernameV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def register_username_v0(
     body: RegisterUsernameV0,

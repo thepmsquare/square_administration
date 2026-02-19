@@ -6,14 +6,6 @@ import bcrypt
 from fastapi import status, HTTPException, Header, Request
 from fastapi.responses import JSONResponse
 from requests import HTTPError
-from square_authentication_helper import TokenType
-from square_commons import get_api_output_in_standard_format
-from square_commons.api_utils import create_cookie
-from square_database_helper.pydantic_models import FilterConditionsV0, FiltersV0
-from square_database_structure.square import global_string_database_name
-from square_database_structure.square.authentication import global_string_schema_name
-from square_database_structure.square.authentication.tables import User, UserCredential
-
 from square_administration.configuration import (
     global_object_square_logger,
     config_str_admin_password_hash,
@@ -29,8 +21,17 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
+    RegisterUsernameV0Response,
+    RegisterUsernameV0ResponseMain,
 )
 from square_administration.utils.common import is_https, global_int_app_id
+from square_authentication_helper import TokenType
+from square_commons import get_api_output_in_standard_format
+from square_commons.api_utils import create_cookie
+from square_database_helper.pydantic_models import FilterConditionsV0, FiltersV0
+from square_database_structure.square import global_string_database_name
+from square_database_structure.square.authentication import global_string_schema_name
+from square_database_structure.square.authentication.tables import User, UserCredential
 
 
 @global_object_square_logger.auto_logger()
@@ -80,13 +81,17 @@ def util_register_username_v0(
         modified_response = response.model_dump()
         del modified_response["data"]["main"]["refresh_token"]
         del modified_response["data"]["main"]["refresh_token_expiry_time"]
+        data_pydantic = RegisterUsernameV0Response(
+            main=RegisterUsernameV0ResponseMain(**modified_response["data"]["main"])
+        )
         output_content = get_api_output_in_standard_format(
             message=messages["REGISTRATION_SUCCESSFUL"],
-            data={"main": modified_response["data"]["main"]},
+            data=data_pydantic.model_dump(),
+            as_dict=False,
         )
         json_response = JSONResponse(
             status_code=status.HTTP_201_CREATED,
-            content=output_content,
+            content=output_content.model_dump(),
         )
         json_response.set_cookie(
             **create_cookie(
