@@ -41,9 +41,16 @@ class RegisterUsernameV0ResponseMain(BaseModel):
     username: str
     app_id: int | None
     access_token: str | None
-    refresh_token: str | None
-    refresh_token_expiry_time: str | None
 
 
 class RegisterUsernameV0Response(BaseModel):
     main: RegisterUsernameV0ResponseMain
+
+
+class LoginUsernameV0ResponseMain(BaseModel):
+    user_id: str
+    access_token: str
+
+
+class LoginUsernameV0Response(BaseModel):
+    main: LoginUsernameV0ResponseMain

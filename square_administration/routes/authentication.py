@@ -14,6 +14,7 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
     RegisterUsernameV0Response,
+    LoginUsernameV0Response,
 )
 from square_administration.utils.routes.authentication import (
     util_register_username_v0,
@@ -59,7 +60,11 @@ async def register_username_v0(
         )
 
 
-@router.post("/login_username/v0")
+@router.post(
+    "/login_username/v0",
+    status_code=status.HTTP_201_CREATED,
+    response_model=StandardResponse[LoginUsernameV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def login_username_v0(
     body: LoginUsernameV0,

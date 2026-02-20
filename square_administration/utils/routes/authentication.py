@@ -21,8 +21,8 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
-    RegisterUsernameV0Response,
     RegisterUsernameV0ResponseMain,
+    LoginUsernameV0ResponseMain,
 )
 from square_administration.utils.common import is_https, global_int_app_id
 from square_authentication_helper import TokenType
@@ -81,12 +81,12 @@ def util_register_username_v0(
         modified_response = response.model_dump()
         del modified_response["data"]["main"]["refresh_token"]
         del modified_response["data"]["main"]["refresh_token_expiry_time"]
-        data_pydantic = RegisterUsernameV0Response(
-            main=RegisterUsernameV0ResponseMain(**modified_response["data"]["main"])
-        )
+
         output_content = get_api_output_in_standard_format(
             message=messages["REGISTRATION_SUCCESSFUL"],
-            data=data_pydantic.model_dump(),
+            data=RegisterUsernameV0ResponseMain(
+                **modified_response["data"]["main"]
+            ).model_dump(),
             as_dict=False,
         )
         json_response = JSONResponse(
@@ -168,13 +168,17 @@ def util_login_username_v0(
         modified_response = response.model_dump()
         del modified_response["data"]["main"]["refresh_token"]
         del modified_response["data"]["main"]["refresh_token_expiry_time"]
+
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": modified_response["data"]["main"]},
+            data=LoginUsernameV0ResponseMain(
+                **modified_response["data"]["main"]
+            ).model_dump(),
+            as_dict=False,
         )
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=output_content,
+            content=output_content.model_dump(),
         )
         json_response.set_cookie(
             **create_cookie(
