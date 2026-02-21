@@ -11,12 +11,14 @@
         - RegisterUsernameV0ResponseMain.
         - LoginUsernameV0Response.
         - LoginUsernameV0ResponseMain.
+        - RemoveAppForSelfV0Response.
 - routes
     - add output format validation in the following in core:
         - get_all_greetings_v0.
     - add output format validation in the following in core:
         - register_username_v0.
         - login_username_v0.
+        - remove_app_for_self_v0.
 - dependencies
     - update "square_commons>=3.1.0"
 

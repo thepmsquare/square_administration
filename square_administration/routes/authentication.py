@@ -1,33 +1,32 @@
 from typing import Annotated
 
-from fastapi import APIRouter, status, HTTPException, Header, Request
+from fastapi import APIRouter, Header, HTTPException, Request, status
 from fastapi.responses import JSONResponse
-from square_administration.configuration import (
-    global_object_square_logger,
-)
+from square_commons import get_api_output_in_standard_format
+from square_commons.api_utils import StandardResponse
+
+from square_administration.configuration import global_object_square_logger
 from square_administration.messages import messages
 from square_administration.pydantic_models.authentication import (
-    RegisterUsernameV0,
     LoginUsernameV0,
+    LoginUsernameV0Response,
+    RegisterUsernameV0,
+    RegisterUsernameV0Response,
     RemoveAppForSelfV0,
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
-    RegisterUsernameV0Response,
-    LoginUsernameV0Response,
 )
 from square_administration.utils.routes.authentication import (
-    util_register_username_v0,
-    util_login_username_v0,
-    util_remove_app_for_self_v0,
-    util_logout_v0,
     util_generate_access_token_v0,
+    util_login_username_v0,
+    util_logout_v0,
+    util_register_username_v0,
+    util_remove_app_for_self_v0,
     util_reset_password_and_login_using_backup_code_v0,
     util_reset_password_and_login_using_reset_email_code_v0,
     util_update_password_v0,
 )
-from square_commons import get_api_output_in_standard_format
-from square_commons.api_utils import StandardResponse
 
 router = APIRouter(
     tags=["authentication"],
@@ -86,7 +85,11 @@ async def login_username_v0(
         )
 
 
-@router.patch("/remove_app_for_self/v0")
+@router.patch(
+    "/remove_app_for_self/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=StandardResponse[RemoveAppForSelfV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def remove_app_for_self_v0(
     access_token: Annotated[str, Header()],

@@ -54,3 +54,7 @@ class LoginUsernameV0ResponseMain(BaseModel):
 
 class LoginUsernameV0Response(BaseModel):
     main: LoginUsernameV0ResponseMain
+
+
+class RemoveAppForSelfV0Response(BaseModel):
+    main: List[int]

@@ -3,28 +3,9 @@ from datetime import datetime
 from typing import Annotated
 
 import bcrypt
-from fastapi import status, HTTPException, Header, Request
+from fastapi import Header, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from requests import HTTPError
-from square_administration.configuration import (
-    global_object_square_logger,
-    config_str_admin_password_hash,
-    global_object_square_authentication_helper,
-    config_str_cookie_domain,
-    global_object_square_database_helper,
-)
-from square_administration.messages import messages
-from square_administration.pydantic_models.authentication import (
-    RegisterUsernameV0,
-    LoginUsernameV0,
-    RemoveAppForSelfV0,
-    ResetPasswordAndLoginUsingBackupCodeV0,
-    ResetPasswordAndLoginUsingResetEmailCodeV0,
-    UpdatePasswordV0,
-    RegisterUsernameV0ResponseMain,
-    LoginUsernameV0ResponseMain,
-)
-from square_administration.utils.common import is_https, global_int_app_id
 from square_authentication_helper import TokenType
 from square_commons import get_api_output_in_standard_format
 from square_commons.api_utils import create_cookie
@@ -32,6 +13,26 @@ from square_database_helper.pydantic_models import FilterConditionsV0, FiltersV0
 from square_database_structure.square import global_string_database_name
 from square_database_structure.square.authentication import global_string_schema_name
 from square_database_structure.square.authentication.tables import User, UserCredential
+
+from square_administration.configuration import (
+    config_str_admin_password_hash,
+    config_str_cookie_domain,
+    global_object_square_authentication_helper,
+    global_object_square_database_helper,
+    global_object_square_logger,
+)
+from square_administration.messages import messages
+from square_administration.pydantic_models.authentication import (
+    LoginUsernameV0,
+    LoginUsernameV0ResponseMain,
+    RegisterUsernameV0,
+    RegisterUsernameV0ResponseMain,
+    RemoveAppForSelfV0,
+    ResetPasswordAndLoginUsingBackupCodeV0,
+    ResetPasswordAndLoginUsingResetEmailCodeV0,
+    UpdatePasswordV0,
+)
+from square_administration.utils.common import global_int_app_id, is_https
 
 
 @global_object_square_logger.auto_logger()
@@ -284,13 +285,15 @@ def util_remove_app_for_self_v0(
         """
         return value
         """
+        data_to_return = RemoveAppForSelfV0Response(main=response.data.main)
         output_content = get_api_output_in_standard_format(
             message=messages["GENERIC_UPDATE_SUCCESSFUL"],
-            data={"main": response.data.main},
+            data=data_to_return.model_dump(),
+            as_dict=False,
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=output_content,
+            content=output_content.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
