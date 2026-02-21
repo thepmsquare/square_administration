@@ -24,9 +24,7 @@ from square_administration.configuration import (
 from square_administration.messages import messages
 from square_administration.pydantic_models.authentication import (
     LoginUsernameV0,
-    LoginUsernameV0ResponseMain,
     RegisterUsernameV0,
-    RegisterUsernameV0ResponseMain,
     RemoveAppForSelfV0,
     RemoveAppForSelfV0Response,
     ResetPasswordAndLoginUsingBackupCodeV0,
@@ -37,6 +35,8 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingBackupCodeV0Response,
     ResetPasswordAndLoginUsingResetEmailCodeV0Response,
     UpdatePasswordV0Response,
+    LoginUsernameV0Response,
+    RegisterUsernameV0Response,
 )
 from square_administration.utils.common import global_int_app_id, is_https
 
@@ -91,9 +91,7 @@ def util_register_username_v0(
 
         output_content = get_api_output_in_standard_format(
             message=messages["REGISTRATION_SUCCESSFUL"],
-            data=RegisterUsernameV0ResponseMain(
-                **modified_response["data"]["main"]
-            ).model_dump(),
+            data=RegisterUsernameV0Response(**modified_response["data"]).model_dump(),
             as_dict=False,
         )
         json_response = JSONResponse(
@@ -178,9 +176,7 @@ def util_login_username_v0(
 
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
-            data=LoginUsernameV0ResponseMain(
-                **modified_response["data"]["main"]
-            ).model_dump(),
+            data=LoginUsernameV0Response(**modified_response["data"]).model_dump(),
             as_dict=False,
         )
         json_response = JSONResponse(
@@ -377,7 +373,7 @@ def util_logout_v0(request: Request):
         """
         return value
         """
-        output_content = LogoutV0Response(**response)
+        output_content = LogoutV0Response(**response.model_dump())
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content=output_content.model_dump(),
@@ -459,7 +455,9 @@ def util_generate_access_token_v0(
         """
         return value
         """
-        output_content = StandardResponse[GenerateAccessTokenV0Response](**response)
+        output_content = StandardResponse[GenerateAccessTokenV0Response](
+            **response.model_dump()
+        )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content=output_content.model_dump(),
@@ -708,7 +706,7 @@ def util_update_password_v0(
         """
         return value
         """
-        output_content = UpdatePasswordV0Response(**response)
+        output_content = UpdatePasswordV0Response(**response.model_dump())
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content=output_content.model_dump(),

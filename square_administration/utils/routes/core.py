@@ -4,6 +4,19 @@ from typing import Annotated
 from fastapi import Header, status, HTTPException
 from fastapi.responses import JSONResponse
 from requests import HTTPError
+from square_authentication_helper import TokenType
+from square_commons import get_api_output_in_standard_format
+from square_commons.api_utils import StandardResponse
+from square_database_helper import FiltersV0
+from square_database_helper.pydantic_models import FilterConditionsV0
+from square_database_structure.square import global_string_database_name
+from square_database_structure.square.authentication import (
+    global_string_schema_name as global_string_schema_name_authentication,
+)
+from square_database_structure.square.authentication.tables import User
+from square_database_structure.square.greeting import global_string_schema_name
+from square_database_structure.square.greeting.tables import Greeting
+
 from square_administration.configuration import (
     global_object_square_logger,
     global_object_square_database_helper,
@@ -15,17 +28,6 @@ from square_administration.pydantic_models.core import (
     GetAllGreetingsV0Response,
 )
 from square_administration.utils.common import global_int_app_id
-from square_authentication_helper import TokenType
-from square_commons import get_api_output_in_standard_format
-from square_database_helper import FiltersV0
-from square_database_helper.pydantic_models import FilterConditionsV0
-from square_database_structure.square import global_string_database_name
-from square_database_structure.square.authentication import (
-    global_string_schema_name as global_string_schema_name_authentication,
-)
-from square_database_structure.square.authentication.tables import User
-from square_database_structure.square.greeting import global_string_schema_name
-from square_database_structure.square.greeting.tables import Greeting
 
 
 @global_object_square_logger.auto_logger()
@@ -102,12 +104,11 @@ def util_get_all_greetings_v0(
         """
         return value
         """
-        data_pydantic = GetAllGreetingsV0Response(**response_clone.data)
-        output_content = get_api_output_in_standard_format(
-            message=messages["GENERIC_READ_SUCCESSFUL"],
-            data=data_pydantic.model_dump(),
-            as_dict=False,
+
+        output_content = StandardResponse[GetAllGreetingsV0Response](
+            **response_clone.model_dump()
         )
+
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content=output_content.model_dump(),

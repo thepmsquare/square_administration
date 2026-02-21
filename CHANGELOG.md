@@ -1,5 +1,11 @@
 # changelog
 
+## v4.1.1
+
+- bug fixes in output formatting.
+- dependencies
+    - "square_authentication_helper>=3.3.1"
+
 ## v4.1.0
 
 - models
