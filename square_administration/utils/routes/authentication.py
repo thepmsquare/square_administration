@@ -28,6 +28,7 @@ from square_administration.pydantic_models.authentication import (
     RegisterUsernameV0,
     RegisterUsernameV0ResponseMain,
     RemoveAppForSelfV0,
+    RemoveAppForSelfV0Response,
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
