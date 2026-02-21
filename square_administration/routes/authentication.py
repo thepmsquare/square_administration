@@ -17,6 +17,11 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
+    LogoutV0Response,
+    GenerateAccessTokenV0Response,
+    ResetPasswordAndLoginUsingBackupCodeV0Response,
+    ResetPasswordAndLoginUsingResetEmailCodeV0Response,
+    UpdatePasswordV0Response,
 )
 from square_administration.utils.routes.authentication import (
     util_generate_access_token_v0,
@@ -114,7 +119,11 @@ async def remove_app_for_self_v0(
         )
 
 
-@router.delete("/logout/v0")
+@router.delete(
+    "/logout/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=LogoutV0Response,
+)
 @global_object_square_logger.auto_logger()
 async def logout_v0(request: Request):
     try:
@@ -134,7 +143,11 @@ async def logout_v0(request: Request):
         )
 
 
-@router.get("/generate_access_token/v0")
+@router.get(
+    "/generate_access_token/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=StandardResponse[GenerateAccessTokenV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def generate_access_token_v0(
     request: Request,
@@ -156,7 +169,11 @@ async def generate_access_token_v0(
         )
 
 
-@router.post("/reset_password_and_login_using_backup_code/v0")
+@router.post(
+    "/reset_password_and_login_using_backup_code/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=StandardResponse[ResetPasswordAndLoginUsingBackupCodeV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def reset_password_and_login_using_backup_code_v0(
     body: ResetPasswordAndLoginUsingBackupCodeV0,
@@ -178,7 +195,11 @@ async def reset_password_and_login_using_backup_code_v0(
         )
 
 
-@router.post("/reset_password_and_login_using_reset_email_code/v0")
+@router.post(
+    "/reset_password_and_login_using_reset_email_code/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=StandardResponse[ResetPasswordAndLoginUsingResetEmailCodeV0Response],
+)
 @global_object_square_logger.auto_logger()
 async def reset_password_and_login_using_reset_email_code_v0(
     body: ResetPasswordAndLoginUsingResetEmailCodeV0,
@@ -200,7 +221,11 @@ async def reset_password_and_login_using_reset_email_code_v0(
         )
 
 
-@router.patch("/update_password/v0")
+@router.patch(
+    "/update_password/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=UpdatePasswordV0Response,
+)
 @global_object_square_logger.auto_logger()
 async def update_password_v0(
     request: Request,

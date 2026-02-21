@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from requests import HTTPError
 from square_authentication_helper import TokenType
 from square_commons import get_api_output_in_standard_format
-from square_commons.api_utils import create_cookie
+from square_commons.api_utils import create_cookie, StandardResponse
 from square_database_helper.pydantic_models import FilterConditionsV0, FiltersV0
 from square_database_structure.square import global_string_database_name
 from square_database_structure.square.authentication import global_string_schema_name
@@ -32,6 +32,11 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingBackupCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0,
     UpdatePasswordV0,
+    LogoutV0Response,
+    GenerateAccessTokenV0Response,
+    ResetPasswordAndLoginUsingBackupCodeV0Response,
+    ResetPasswordAndLoginUsingResetEmailCodeV0Response,
+    UpdatePasswordV0Response,
 )
 from square_administration.utils.common import global_int_app_id, is_https
 
@@ -372,10 +377,10 @@ def util_logout_v0(request: Request):
         """
         return value
         """
-
+        output_content = LogoutV0Response(**response)
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=response.model_dump(),
+            content=output_content.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
@@ -454,10 +459,10 @@ def util_generate_access_token_v0(
         """
         return value
         """
-
+        output_content = StandardResponse[GenerateAccessTokenV0Response](**response)
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=response.model_dump(),
+            content=output_content.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)
@@ -525,13 +530,14 @@ def util_reset_password_and_login_using_backup_code_v0(
         modified_response = response.model_dump()
         del modified_response["data"]["main"]["refresh_token"]
         del modified_response["data"]["main"]["refresh_token_expiry_time"]
-        output_content = get_api_output_in_standard_format(
-            message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": modified_response["data"]["main"]},
-        )
+
+        output_content = StandardResponse[
+            ResetPasswordAndLoginUsingBackupCodeV0Response
+        ](**modified_response)
+
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=output_content,
+            content=output_content.model_dump(),
         )
         json_response.set_cookie(
             **create_cookie(
@@ -610,13 +616,13 @@ def util_reset_password_and_login_using_reset_email_code_v0(
         modified_response = response.model_dump()
         del modified_response["data"]["main"]["refresh_token"]
         del modified_response["data"]["main"]["refresh_token_expiry_time"]
-        output_content = get_api_output_in_standard_format(
-            message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": modified_response["data"]["main"]},
-        )
+        output_content = StandardResponse[
+            ResetPasswordAndLoginUsingResetEmailCodeV0Response
+        ](**modified_response)
+
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=output_content,
+            content=output_content.model_dump(),
         )
         json_response.set_cookie(
             **create_cookie(
@@ -702,10 +708,10 @@ def util_update_password_v0(
         """
         return value
         """
-
+        output_content = UpdatePasswordV0Response(**response)
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=response.model_dump(),
+            content=output_content.model_dump(),
         )
     except HTTPError as http_error:
         global_object_square_logger.logger.error(http_error, exc_info=True)

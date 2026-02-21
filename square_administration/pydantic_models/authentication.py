@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, TypeAlias
 
 from pydantic import BaseModel
+from square_commons.api_utils import StandardResponse
 
 
 class RegisterUsernameV0(BaseModel):
@@ -60,3 +61,35 @@ class LoginUsernameV0Response(BaseModel):
 
 class RemoveAppForSelfV0Response(BaseModel):
     main: List[int]
+
+
+LogoutV0Response: TypeAlias = StandardResponse[None]
+
+
+class GenerateAccessTokenV0ResponseMain(BaseModel):
+    access_token: str
+
+
+class GenerateAccessTokenV0Response(BaseModel):
+    main: GenerateAccessTokenV0ResponseMain
+
+
+class ResetPasswordAndLoginUsingBackupCodeV0ResponseMain(BaseModel):
+    user_id: str
+    access_token: str
+
+
+class ResetPasswordAndLoginUsingBackupCodeV0Response(BaseModel):
+    main: ResetPasswordAndLoginUsingBackupCodeV0ResponseMain
+
+
+class ResetPasswordAndLoginUsingResetEmailCodeV0ResponseMain(BaseModel):
+    user_id: str
+    access_token: str
+
+
+class ResetPasswordAndLoginUsingResetEmailCodeV0Response(BaseModel):
+    main: ResetPasswordAndLoginUsingResetEmailCodeV0ResponseMain
+
+
+UpdatePasswordV0Response: TypeAlias = StandardResponse[None]

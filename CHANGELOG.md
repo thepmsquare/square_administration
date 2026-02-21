@@ -1,6 +1,6 @@
 # changelog
 
-## v4.1.0 (in progress)
+## v4.1.0
 
 - models
     - add the following in core:
@@ -12,6 +12,14 @@
         - LoginUsernameV0Response.
         - LoginUsernameV0ResponseMain.
         - RemoveAppForSelfV0Response.
+        - LogoutV0Response.
+        - GenerateAccessTokenV0Response.
+        - GenerateAccessTokenV0ResponseMain.
+        - ResetPasswordAndLoginUsingBackupCodeV0Response.
+        - ResetPasswordAndLoginUsingBackupCodeV0ResponseMain.
+        - ResetPasswordAndLoginUsingResetEmailCodeV0Response.
+        - ResetPasswordAndLoginUsingResetEmailCodeV0ResponseMain.
+        - UpdatePasswordV0Response
 - routes
     - add output format validation in the following in core:
         - get_all_greetings_v0.
@@ -19,6 +27,11 @@
         - register_username_v0.
         - login_username_v0.
         - remove_app_for_self_v0.
+        - logout_v0.
+        - generate_access_token_v0.
+        - reset_password_and_login_using_backup_code_v0.
+        - reset_password_and_login_using_reset_email_code_v0.
+        - update_password_v0.
 - dependencies
     - update "square_commons>=3.1.0"
 
