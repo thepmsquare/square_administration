@@ -1,5 +1,9 @@
 # changelog
 
+## v4.1.2
+
+- bug fix in update_password_v0
+
 ## v4.1.1
 
 - bug fixes in output formatting.

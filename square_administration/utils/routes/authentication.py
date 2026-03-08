@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from requests import HTTPError
 from square_authentication_helper import TokenType
 from square_commons import get_api_output_in_standard_format
-from square_commons.api_utils import create_cookie, StandardResponse
+from square_commons.api_utils import StandardResponse, create_cookie
 from square_database_helper.pydantic_models import FilterConditionsV0, FiltersV0
 from square_database_structure.square import global_string_database_name
 from square_database_structure.square.authentication import global_string_schema_name
@@ -23,20 +23,20 @@ from square_administration.configuration import (
 )
 from square_administration.messages import messages
 from square_administration.pydantic_models.authentication import (
+    GenerateAccessTokenV0Response,
     LoginUsernameV0,
+    LoginUsernameV0Response,
+    LogoutV0Response,
     RegisterUsernameV0,
+    RegisterUsernameV0Response,
     RemoveAppForSelfV0,
     RemoveAppForSelfV0Response,
     ResetPasswordAndLoginUsingBackupCodeV0,
-    ResetPasswordAndLoginUsingResetEmailCodeV0,
-    UpdatePasswordV0,
-    LogoutV0Response,
-    GenerateAccessTokenV0Response,
     ResetPasswordAndLoginUsingBackupCodeV0Response,
+    ResetPasswordAndLoginUsingResetEmailCodeV0,
     ResetPasswordAndLoginUsingResetEmailCodeV0Response,
+    UpdatePasswordV0,
     UpdatePasswordV0Response,
-    LoginUsernameV0Response,
-    RegisterUsernameV0Response,
 )
 from square_administration.utils.common import global_int_app_id, is_https
 
@@ -684,14 +684,15 @@ def util_update_password_v0(
         preserve_session_refresh_token = refresh_token
         if refresh_token is None:
             preserve_session_refresh_token = None
-        refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
-            refresh_token,
-            TokenType.refresh_token,
-            app_id=global_int_app_id,
-            response_as_pydantic=True,
-        ).data.main
-        if refresh_token_payload["app_id"] != global_int_app_id:
-            preserve_session_refresh_token = None
+        else:
+            refresh_token_payload = global_object_square_authentication_helper.validate_and_get_payload_from_token_v0(
+                refresh_token,
+                TokenType.refresh_token,
+                app_id=global_int_app_id,
+                response_as_pydantic=True,
+            ).data.main
+            if refresh_token_payload["app_id"] != global_int_app_id:
+                preserve_session_refresh_token = None
         """
         main process
         """
