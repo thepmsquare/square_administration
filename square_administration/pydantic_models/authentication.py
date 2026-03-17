@@ -93,3 +93,7 @@ class ResetPasswordAndLoginUsingResetEmailCodeV0Response(BaseModel):
 
 
 UpdatePasswordV0Response: TypeAlias = StandardResponse[None]
+
+
+class RegisterLoginGoogleV0(BaseModel):
+    google_id: str

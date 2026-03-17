@@ -1,5 +1,9 @@
 # changelog
 
+## v4.2.0 (in progress)
+
+- re-add remove register_login_google_v0.
+
 ## v4.1.2
 
 - bug fix in update_password_v0
