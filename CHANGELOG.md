@@ -1,5 +1,13 @@
 # changelog
 
+## v4.2.1
+
+- add response type to register_login_google_v0.
+- models
+    - add the following in authentication:
+        - RegisterLoginGoogleV0Response.
+        - RegisterLoginGoogleV0ResponseMain.
+
 ## v4.2.0
 
 - re-add remove register_login_google_v0.
@@ -25,7 +33,7 @@
     - add the following in core:
         - GetAllGreetingsV0ResponseMain.
         - GetAllGreetingsV0Response.
-    - add the following in core:
+    - add the following in authentication:
         - RegisterUsernameV0Response.
         - RegisterUsernameV0ResponseMain.
         - LoginUsernameV0Response.
@@ -42,7 +50,7 @@
 - routes
     - add output format validation in the following in core:
         - get_all_greetings_v0.
-    - add output format validation in the following in core:
+    - add output format validation in the following in authentication:
         - register_username_v0.
         - login_username_v0.
         - remove_app_for_self_v0.

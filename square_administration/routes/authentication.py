@@ -23,6 +23,7 @@ from square_administration.pydantic_models.authentication import (
     ResetPasswordAndLoginUsingResetEmailCodeV0Response,
     UpdatePasswordV0Response,
     RegisterLoginGoogleV0,
+    RegisterLoginGoogleV0Response,
 )
 from square_administration.utils.routes.authentication import (
     util_generate_access_token_v0,
@@ -253,7 +254,11 @@ async def update_password_v0(
         )
 
 
-@router.post("/register_login_google/v0")
+@router.post(
+    "/register_login_google/v0",
+    status_code=status.HTTP_200_OK,
+    response_model=RegisterLoginGoogleV0Response,
+)
 @global_object_square_logger.auto_logger()
 async def register_login_google_v0(body: RegisterLoginGoogleV0):
     try:

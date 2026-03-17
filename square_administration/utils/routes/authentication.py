@@ -40,6 +40,7 @@ from square_administration.pydantic_models.authentication import (
     UpdatePasswordV0,
     UpdatePasswordV0Response,
     RegisterLoginGoogleV0,
+    RegisterLoginGoogleV0Response,
 )
 from square_administration.utils.common import global_int_app_id, is_https
 
@@ -776,23 +777,26 @@ def util_register_login_google_v0(body: RegisterLoginGoogleV0):
             google_id=google_id,
             assign_app_id_if_missing=False,
             app_id=global_int_app_id,
+            response_as_pydantic=True,
         )
         """
         return value
         """
-        refresh_token = response["data"]["main"]["refresh_token"]
-        refresh_token_expiry_time = response["data"]["main"][
-            "refresh_token_expiry_time"
-        ]
-        del response["data"]["main"]["refresh_token"]
-        del response["data"]["main"]["refresh_token_expiry_time"]
+        refresh_token = response.data.main.refresh_token
+        refresh_token_expiry_time = response.data.main.refresh_token_expiry_time
+        modified_response = response.model_dump()
+        del modified_response["data"]["main"]["refresh_token"]
+        del modified_response["data"]["main"]["refresh_token_expiry_time"]
         output_content = get_api_output_in_standard_format(
             message=messages["LOGIN_SUCCESSFUL"],
-            data={"main": response["data"]["main"]},
+            data=RegisterLoginGoogleV0Response(
+                **modified_response["data"]
+            ).model_dump(),
+            as_dict=False,
         )
         json_response = JSONResponse(
             status_code=status.HTTP_200_OK,
-            content=output_content,
+            content=output_content.model_dump(),
         )
         json_response.set_cookie(
             **create_cookie(

@@ -97,3 +97,15 @@ UpdatePasswordV0Response: TypeAlias = StandardResponse[None]
 
 class RegisterLoginGoogleV0(BaseModel):
     google_id: str
+
+
+class RegisterLoginGoogleV0ResponseMain(BaseModel):
+    user_id: str
+    username: str
+    app_id: int | None
+    access_token: str | None
+    was_new_user: bool
+
+
+class RegisterLoginGoogleV0Response(BaseModel):
+    main: RegisterLoginGoogleV0ResponseMain
