@@ -34,6 +34,9 @@ try:
     config_str_admin_password_hash = ldict_configuration["ENVIRONMENT"][
         "ADMIN_PASSWORD_HASH"
     ]
+    config_list_admin_allowed_emails = eval(
+        ldict_configuration["ENVIRONMENT"]["ADMIN_ALLOWED_EMAILS"]
+    )
 
     config_str_ssl_crt_file_path = ldict_configuration["ENVIRONMENT"][
         "SSL_CRT_FILE_PATH"

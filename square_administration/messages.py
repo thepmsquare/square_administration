@@ -13,4 +13,5 @@ messages = {
     "INCORRECT_ACCESS_TOKEN": "the access token provided is invalid or expired.",
     "INCORRECT_REFRESH_TOKEN": "the refresh token provided is invalid or expired.",
     "REFRESH_TOKEN_NOT_FOUND": "refresh token not found. please login again.",
+    "UNAUTHORIZED": "your account is not authorized for this action.",
 }

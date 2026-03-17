@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Annotated
 
 import bcrypt
+import jwt
 from fastapi import Header, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from requests import HTTPError
@@ -20,6 +21,7 @@ from square_administration.configuration import (
     global_object_square_authentication_helper,
     global_object_square_database_helper,
     global_object_square_logger,
+    config_list_admin_allowed_emails,
 )
 from square_administration.messages import messages
 from square_administration.pydantic_models.authentication import (
@@ -755,6 +757,18 @@ def util_register_login_google_v0(body: RegisterLoginGoogleV0):
         validation
         """
         # pass
+
+        decoded_google_id = jwt.decode(google_id, options={"verify_signature": False})
+        if decoded_google_id["email"] not in config_list_admin_allowed_emails:
+            output_content = get_api_output_in_standard_format(
+                message=messages["UNAUTHORIZED"],
+                log=f"{str(decoded_google_id["email"])} is not in allowed email list.",
+                as_dict=False,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=output_content.model_dump(),
+            )
         """
         main process
         """

@@ -1,8 +1,13 @@
 # changelog
 
-## v4.2.0 (in progress)
+## v4.2.0
 
 - re-add remove register_login_google_v0.
+- add validation in register_login_google_v0 to allow only allowed emails to login/register through google.
+- config
+    - add ADMIN_ALLOWED_EMAILS in ENVIRONMENT section.
+- dependencies
+    - add "pyjwt>=2.12.1"
 
 ## v4.1.2
 
